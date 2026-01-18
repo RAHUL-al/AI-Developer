@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 
 class Product(BaseModel):
     id: int
@@ -10,7 +10,7 @@ class Product(BaseModel):
 
 class RecommendRequest(BaseModel):
     query: str
-    products: list[Product]
+    products: Optional[List[Product]] = None  # Optional - if not provided, searches stored products
 
 class RecommendedProduct(BaseModel):
     id: int
@@ -23,6 +23,8 @@ class RecommendedProduct(BaseModel):
 
 class RecommendResponse(BaseModel):
     query: str
+    found: bool  # Whether exact matches were found
+    message: str  # Descriptive message about the search results
     recommendations: list[RecommendedProduct]
     total_products: int
     response_time_seconds: float
